@@ -1,0 +1,56 @@
+digraph {
+	rankdir=TB
+	1 [label="1 (Root)" image="path/to/root_icon.png" shape=none]
+	10123 [label=Research fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10123
+	10117 [label=Report fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10117
+	10099 [label=Testing fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10099
+	10089 [label="subject submission" fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10089
+	10070 [label="Simulation wide" fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10070
+	10044 [label=Endeavour fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10044
+	10038 [label="lockstep simulation" fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10038
+	10037 [label=Visualisation fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10037
+	10036 [label="Rollback simulation" fillcolor=orange1 shape=parallelogram style=filled]
+	1 -> 10036
+	10122 [label=" know how often
+the entity
+prediction were
+correct" fillcolor=orange1 shape=parallelogram style=filled]
+	10123 -> 10122
+	10121 [label=" experimentally
+vary the method
+of
+parallelisation
+on nominal
+entities" fillcolor=orange1 shape=parallelogram style=filled]
+	10123 -> 10121
+	10120 [label=" experimentally
+vary the
+temporal
+variance of
+entity timing" fillcolor=orange1 shape=parallelogram style=filled]
+	10123 -> 10120
+	10119 [label=" experimentally
+vary entity
+timing
+homogeneity" fillcolor=orange1 shape=parallelogram style=filled]
+	10123 -> 10119
+	10118 [label=" experimentally
+vary entity
+sparsity in the
+simulation" fillcolor=orange1 shape=parallelogram style=filled]
+	10123 -> 10118
+	{
+		rank=same
+		10123
+		" researcher 10123" [label=" researcher " fixedsize=true height=0.8 image="./person.png" imagescale=true labelloc=t shape=none width=1]
+		" researcher " -> 10123 [style=invis]
+	}
+}
