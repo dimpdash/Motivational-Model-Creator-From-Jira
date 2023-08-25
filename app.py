@@ -1,6 +1,12 @@
 import graphviz
 import pandas as pd
 import textwrap
+from dataclasses import dataclass
+
+ORANGE = '#ff9966'
+RED = '#ffad99'
+GREEN = '#99ff99'
+BLUE = '#ccd9ff'
 
 data = pd.read_csv("C:\\Users\\dimpd\Downloads\\Jira.csv")
 
@@ -10,15 +16,45 @@ dot = graphviz.Digraph(format='png')
 # Set the rankdir attribute for the whole graph (default is TB)
 dot.attr(rankdir='TB')
 
+@dataclass
+class Attibute:
+    name : str
+    attribute_type : str
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.attribute_type))
+
+    
 class Node:
     def __init__(self, name):
         self.name = name
         self.children = []
-        self.persona = None
+        self.attributes = set()
 
     def add_child(self, obj):
-        print(self.name, obj.name)
         self.children.append(obj)
+
+    def add_attribute(self, attribute):
+        self.attributes.add(attribute)
+
+    def bubble_up_attributes(self):
+        children = self.children
+        for child in children:
+            child.bubble_up_attributes()
+
+        # once bubbled up consider at this level
+        if len(children) == 0:
+            common_attributes = set()
+        else:
+            common_attributes = children[0].attributes
+        for child in children:
+            common_attributes = common_attributes.intersection(child.attributes)
+        
+        # remove common attributes from children
+        for child in children:
+            child.attributes = child.attributes.difference(common_attributes)
+
+        self.attributes = self.attributes.union(common_attributes)                    
 
 root = Node("root")
 nodes = {}
@@ -28,33 +64,58 @@ def add_persona(issue_id, persona):
     # Create a subgraph for nodes 2 and 3 to be positioned to the right
     with dot.subgraph() as s:
         s.attr(rank='same')  # Set layout direction for this subgraph
+        s.node(persona + issue_id, label=persona, image='./person.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1', labelloc='b')
         s.node(issue_id)
-        s.node(persona + issue_id, label=persona, image='./person.png', shape='none', imagescale='true', fixedsize='true', width='1', height='0.8', labelloc='t')
-        s.edge(persona, issue_id, style='invis')
+        s.edge(persona + issue_id, issue_id, style='invis')
 
-def add_person_recurse(node): 
+def add_be(issue_id, be):
+    # Create a subgraph for nodes 2 and 3 to be positioned to the right
+    with dot.subgraph() as s:
+        s.attr(rank='same')  # Set layout direction for this subgraph
+        s.attr(rankdir='RL')
+        s.node(issue_id)
+        s.node(be + issue_id, label=be, image='./cloud.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
+        s.edge(be + issue_id, issue_id, style='invis')
+
+def add_feel(issue_id, feel):
+    # Create a subgraph for nodes 2 and 3 to be positioned to the right
+    with dot.subgraph() as s:
+        s.attr(rank='same')  # Set layout direction for this subgraph
+        s.node(issue_id)
+        s.node(feel + issue_id, label=feel, image='./heart.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
+        s.edge(feel + issue_id, issue_id, style='invis')
+
+def add_attributes_recurse(node): 
     children = node.children
     for child in children:
-        add_person_recurse(child)
+        add_attributes_recurse(child)
 
-    if node.persona is not None:
-        add_persona(node.name, node.persona)
+    for attribute in node.attributes:
+        if attribute.attribute_type == 'persona':
+            add_persona(node.name, attribute.name)
+        elif attribute.attribute_type == 'be':
+            add_be(node.name, attribute.name)
+        elif attribute.attribute_type == 'feel':
+            add_feel(node.name, attribute.name)
+        
+
 
 def getColour(issue):
     if issue['Priority'] == "High":
-        return "red1"
+        return RED
     elif issue['Priority'] == "Medium":
-        return "orange1"
+        return ORANGE
     elif issue['Priority'] == "Low":
-        return "green1"
+        return GREEN
     
+
 # Add nodes and edges
-dot.node('1', label='1 (Root)', shape='none', image='path/to/root_icon.png')
+dot.node('root', shape='parallelogram', label="Distributed Agent\nSimulator", color=BLUE, style='filled', fixedsize='true', width='2', height='1.2')
 #from data filter rows where Issue Type = Epic
 epics = data[data['Issue Type'] == 'Epic']
 for index, epic in epics.iterrows():
     dot.node(str(epic["Issue id"]), label=epic["Summary"], shape='parallelogram', style='filled', fillcolor=getColour(epic))
-    dot.edge('1', str(epic["Issue id"]))
+    dot.edge('root', str(epic["Issue id"]))
     
     node = Node(str(epic["Issue id"]))
     root.add_child(node)
@@ -65,40 +126,47 @@ for index, epic in epics.iterrows():
 user_stories = data[data['Issue Type'] == 'Story']
 for index, user_story in user_stories.iterrows():
     summary = user_story["Summary"]
-    description = summary.split("I want to")[1]
-    description = description.split("so that")[0]
-    persona = summary.split("As a")[1]
-    persona = persona.split("I want to")[0]
     
-    dot.node(str(user_story["Issue id"]), label=textwrap.fill(description, 15), shape='parallelogram', style='filled', fillcolor=getColour(user_story))
-
-    node = Node(str(user_story["Issue id"]))
-    nodes[str(int(user_story["Parent"]))].add_child(node)
-    nodes[str(user_story["Issue id"])] = node
-    node.persona = persona
+    I_WANT_TO = 'I want to'
+    I_WANT_IT_TO_BE = 'I want it to be'
+    I_WANT_TO_FEEL = 'I want to feel'
     
-    print(str(user_story["Parent"]))
-    dot.edge(str(int(user_story["Parent"])), str(user_story["Issue id"]))
+    SO_THAT = 'so that'
+    AS_A = 'As a'
 
-def bubble_up_persona(node):
-    children = node.children
-    for child in children:
-        bubble_up_persona(child)
+    if I_WANT_TO_FEEL in summary:
+        i_want = I_WANT_TO_FEEL
+    elif I_WANT_TO in summary:
+        i_want = I_WANT_TO
+    elif I_WANT_IT_TO_BE in summary:
+        i_want = I_WANT_IT_TO_BE
 
-    # once bubbled up consider at this level
-    personas = set()
-    for child in children:
-        personas.add(child.persona)
+    description = summary.split(i_want)[1]
+    description = description.split(SO_THAT)[0]
+    persona = summary.split(AS_A)[1]
+    persona = persona.split(i_want)[0].strip()
+
+    if I_WANT_TO == i_want:
+        label = textwrap.fill(description, 15)    
+        dot.node(str(user_story["Issue id"]), label=label, shape='parallelogram', style='filled', fillcolor=getColour(user_story), height='1.2', width='2', fixedsize='true')
+        node = Node(str(user_story["Issue id"]))
+        nodes[str(int(user_story["Parent"]))].add_child(node)
+        nodes[str(user_story["Issue id"])] = node
+        node.add_attribute(Attibute(persona, "persona"))
+        dot.edge(str(int(user_story["Parent"])), str(user_story["Issue id"]))
+    elif I_WANT_IT_TO_BE == i_want:
+        # be stories are attributes of parent
+        node = nodes[str(int(user_story["Parent"]))]
+        node.add_attribute(Attibute(description, "be"))
+    else:
+        # feel stories are attributes of parent
+        node = nodes[str(int(user_story["Parent"]))]
+        node.add_attribute(Attibute(description, "feel"))
     
-    if len(personas) == 1:
-        node.persona = persona
-    
-        for child in children:
-            child.persona = None
 
-bubble_up_persona(root)
+root.bubble_up_attributes()
 # add persona
-add_person_recurse(root)
+add_attributes_recurse(root)
 
 # Render the tree to a file
 dot.render('icon_tree_custom_layout', view=True)

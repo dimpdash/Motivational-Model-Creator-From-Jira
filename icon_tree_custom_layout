@@ -1,56 +1,67 @@
 digraph {
 	rankdir=TB
-	1 [label="1 (Root)" image="path/to/root_icon.png" shape=none]
-	10123 [label=Research fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10123
-	10117 [label=Report fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10117
-	10099 [label=Testing fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10099
-	10089 [label="subject submission" fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10089
-	10070 [label="Simulation wide" fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10070
-	10044 [label=Endeavour fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10044
-	10038 [label="lockstep simulation" fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10038
-	10037 [label=Visualisation fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10037
-	10036 [label="Rollback simulation" fillcolor=orange1 shape=parallelogram style=filled]
-	1 -> 10036
+	root [label="Distributed Agent
+Simulator" color="#ccd9ff" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
+	10123 [label=Research fillcolor="#ff9966" shape=parallelogram style=filled]
+	root -> 10123
+	10117 [label=Report fillcolor="#ffad99" shape=parallelogram style=filled]
+	root -> 10117
 	10122 [label=" know how often
 the entity
 prediction were
-correct" fillcolor=orange1 shape=parallelogram style=filled]
+correct" fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10122
 	10121 [label=" experimentally
 vary the method
 of
 parallelisation
 on nominal
-entities" fillcolor=orange1 shape=parallelogram style=filled]
+entities" fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10121
 	10120 [label=" experimentally
 vary the
 temporal
 variance of
-entity timing" fillcolor=orange1 shape=parallelogram style=filled]
+entity timing" fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10120
 	10119 [label=" experimentally
 vary entity
 timing
-homogeneity" fillcolor=orange1 shape=parallelogram style=filled]
+homogeneity" fillcolor="#99ff99" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10119
 	10118 [label=" experimentally
 vary entity
 sparsity in the
-simulation" fillcolor=orange1 shape=parallelogram style=filled]
+simulation" fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10118
+	1 [label=" gleam insights
+around the
+distribution
+method" fillcolor="#ffad99" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
+	10117 -> 1
 	{
 		rank=same
+		researcher10123 [label=researcher fixedsize=true height=1 image="./person.png" imagescale=true labelloc=b shape=none width=1]
 		10123
-		" researcher 10123" [label=" researcher " fixedsize=true height=0.8 image="./person.png" imagescale=true labelloc=t shape=none width=1]
-		" researcher " -> 10123 [style=invis]
+		researcher10123 -> 10123 [style=invis]
+	}
+	{
+		rank=same
+		10117
+		" informed 10117" [label=" informed " fixedsize=true height=1 image="./heart.png" imagescale=true shape=none width=1]
+		" informed 10117" -> 10117 [style=invis]
+	}
+	{
+		rank=same
+		rankdir=RL
+		10117
+		" accurate 10117" [label=" accurate " fixedsize=true height=1 image="./cloud.png" imagescale=true shape=none width=1]
+		" accurate 10117" -> 10117 [style=invis]
+	}
+	{
+		rank=same
+		reader10117 [label=reader fixedsize=true height=1 image="./person.png" imagescale=true labelloc=b shape=none width=1]
+		10117
+		reader10117 -> 10117 [style=invis]
 	}
 }
