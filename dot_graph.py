@@ -29,7 +29,7 @@ def add_persona(issue_id, persona, dot):
     # Create a subgraph for nodes 2 and 3 to be positioned to the right
     with dot.subgraph() as s:
         s.attr(rank='same')  # Set layout direction for this subgraph
-        s.node(persona + issue_id, label=persona, image='./person.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1', labelloc='b')
+        s.node(persona + issue_id, label=persona, image='./images/person.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1', labelloc='b')
         s.node(issue_id)
         s.edge(persona + issue_id, issue_id, style='invis')
 
@@ -39,7 +39,7 @@ def add_be(issue_id, be, dot):
         s.attr(rank='same')  # Set layout direction for this subgraph
         s.attr(rankdir='RL')
         s.node(issue_id)
-        s.node(be + issue_id, label=be, image='./cloud.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
+        s.node(be + issue_id, label=be, image='./images/cloud.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
         s.edge(be + issue_id, issue_id, style='invis')
 
 def add_feel(issue_id, feel, dot):
@@ -47,7 +47,7 @@ def add_feel(issue_id, feel, dot):
     with dot.subgraph() as s:
         s.attr(rank='same')  # Set layout direction for this subgraph
         s.node(issue_id)
-        s.node(feel + issue_id, label=feel, image='./heart.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
+        s.node(feel + issue_id, label=feel, image='./images/heart.png', shape='none', imagescale='true', fixedsize='true', width='1', height='1')
         s.edge(feel + issue_id, issue_id, style='invis')
 
 def add_do(parent, node, dot):
