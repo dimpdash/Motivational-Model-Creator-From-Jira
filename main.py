@@ -10,9 +10,11 @@ if __name__ == '__main__':
     argParser = ArgumentParser()
     argParser.add_argument("--project_name", help="project name", default="Project Name")
     argParser.add_argument("--filepath", help="filepath", required=True)
+    argParser.add_argument("--folder", help="folder", default="out")
 
     args = argParser.parse_args()
     project_name = args.project_name
     filepath = args.filepath
+    folder = args.folder
 
-    create_motivational_model_controller(project_name, filepath)
+    create_motivational_model_controller(project_name, filepath, folder)

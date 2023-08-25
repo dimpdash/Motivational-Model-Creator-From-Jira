@@ -2,7 +2,7 @@ import pandas as pd
 from node import Node, Attibute
 from dot_graph import create_dot_graph
 
-def create_motivational_model_controller(project_name, filepath):
+def create_motivational_model_controller(project_name, filepath, folder):
     data = pd.read_csv(filepath)
 
     root = Node("root", None, project_name)
@@ -63,4 +63,4 @@ def create_motivational_model_controller(project_name, filepath):
 
     root.bubble_up_attributes()
 
-    create_dot_graph(root)
+    create_dot_graph(root, folder)

@@ -6,7 +6,7 @@ RED = '#ffad99'
 GREEN = '#99ff99'
 BLUE = '#ccd9ff'
 
-def create_dot_graph(root):
+def create_dot_graph(root, folder):
     # Create a Graphviz Digraph
     dot = graphviz.Digraph(format='png')
 
@@ -15,7 +15,7 @@ def create_dot_graph(root):
     add_attributes_recurse(root, dot)
 
     # Render the tree to a file
-    dot.render('icon_tree_custom_layout', view=True)
+    dot.render( folder + '/' + root.label + "_motivational_model", view=True)
 
 
 def create_main_graph(parent, node, dot):
