@@ -1,11 +1,9 @@
 digraph {
-	rankdir=TB
-	root [label="Distributed Agent
-Simulator" color="#ccd9ff" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
-	10123 [label=Research fillcolor="#ff9966" shape=parallelogram style=filled]
+	root [label="Distributed
+agent
+simulation" fillcolor="#ccd9ff" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
+	10123 [label=Research fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	root -> 10123
-	10117 [label=Report fillcolor="#ffad99" shape=parallelogram style=filled]
-	root -> 10117
 	10122 [label=" know how often
 the entity
 prediction were
@@ -34,6 +32,8 @@ vary entity
 sparsity in the
 simulation" fillcolor="#ff9966" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
 	10123 -> 10118
+	10117 [label=Report fillcolor="#ffad99" fixedsize=true height=1.2 shape=parallelogram style=filled width=2]
+	root -> 10117
 	1 [label=" gleam insights
 around the
 distribution
@@ -47,12 +47,6 @@ method" fillcolor="#ffad99" fixedsize=true height=1.2 shape=parallelogram style=
 	}
 	{
 		rank=same
-		10117
-		" informed 10117" [label=" informed " fixedsize=true height=1 image="./heart.png" imagescale=true shape=none width=1]
-		" informed 10117" -> 10117 [style=invis]
-	}
-	{
-		rank=same
 		rankdir=RL
 		10117
 		" accurate 10117" [label=" accurate " fixedsize=true height=1 image="./cloud.png" imagescale=true shape=none width=1]
@@ -63,5 +57,11 @@ method" fillcolor="#ffad99" fixedsize=true height=1.2 shape=parallelogram style=
 		reader10117 [label=reader fixedsize=true height=1 image="./person.png" imagescale=true labelloc=b shape=none width=1]
 		10117
 		reader10117 -> 10117 [style=invis]
+	}
+	{
+		rank=same
+		10117
+		" informed 10117" [label=" informed " fixedsize=true height=1 image="./heart.png" imagescale=true shape=none width=1]
+		" informed 10117" -> 10117 [style=invis]
 	}
 }
